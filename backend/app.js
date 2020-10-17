@@ -1,9 +1,13 @@
+//app gere toutes les requetes envoyées au serveur
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const path = require('path');     //donne accès au chemin des fichiers
 
-const sauceRoutes = require('./routes/sauce');
+//const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
+const { verify } = require('crypto');
 
 const app = express();
 
@@ -26,8 +30,10 @@ app.use((req, res, next) => {
     
 
 
-  app.use(bodyParser.json());// body-parser permet d'extraire l'objet JSON de la demande. il est mis "middleware global"
-  app.use('/api/sauces', sauceRoutes);
+  app.use(bodyParser.json());     // body-parser permet d'extraire l'objet JSON de la demande. il est mis "middleware global"
+ //app.use('images', express.static(path.join(_dirname, 'images')));  //repondre aux requetes envoyées à 'image', qu'il serve le dossier static, dossier dirname où l'on met images
+ 
+  //app.use('/api/sauces', sauceRoutes);
   app.use('/api/auth', userRoutes);
 
 module.exports = app;

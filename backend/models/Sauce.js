@@ -1,5 +1,5 @@
 
-const mongoose = require('mongoose');
+/*const mongoose = require('mongoose');
 
 const saucesSchema = mongoose.Schema({
     _id: String,
@@ -17,4 +17,4 @@ const saucesSchema = mongoose.Schema({
   });
 
   module.exports = mongoose.model('Sauce', saucesSchema);
-  
+  */
