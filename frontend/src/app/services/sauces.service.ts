@@ -87,12 +87,17 @@ export class SaucesService {
               private auth: AuthService) {}
 
   getSauces() {
-    this.http.get('http://localhost:3000/api/sauces').subscribe(
-      (sauces: Sauce[]) => {
+    this.http.get('http://localhost:3000/api/sauces')
+    
+    .subscribe((sauces: Sauce[]) => {
+      
         this.sauces$.next(sauces);
       },
       (error) => {
+        
+        
         this.sauces$.next([]);
+        
         console.error(error);
       }
     );

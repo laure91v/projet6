@@ -1,8 +1,8 @@
 
-/*const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const saucesSchema = mongoose.Schema({
-    _id: String,
+    
     name: String,
     manufacturer: String,
     description: String,
@@ -17,4 +17,4 @@ const saucesSchema = mongoose.Schema({
   });
 
   module.exports = mongoose.model('Sauce', saucesSchema);
-  */
+  

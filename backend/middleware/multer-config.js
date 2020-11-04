@@ -13,9 +13,9 @@ const storage = multer.diskStorage({        //objet de configuration-on enregist
         callback (null, 'images')                //2 arguments: null=pas d'erreur à ce niveau là-nom du dossier
     },
     filename: (req, file, callback) =>{          //expliquer "quel nom à utiliser" - pas le nom de fichier d'origine car 2x mm nom existe
-        const name =  file.originalname.split('').join('_');             //nouveau nom pour le fichier avt l'extension - nom do'rigine + on split les espaces et crée un tableau+on met des _ à la place
+        const name =  file.originalname.split(' ').join('');             //nouveau nom pour le fichier avt l'extension - nom do'rigine + on split les espaces et crée un tableau+on met des _ à la place
         const extension = MIME_TYPES[file.mimeType];    //element de notre dictionnaire qui correspond au mimetype du fichier envoyé par le frontend                                                        //on doit appliquer une extension du fichier, mais pas d'accès à ce fichier avec "envoyer",on va donc generer les extensions avec les maintype(image.png, image.jpg...)
-    callback(null, name + Date.now()+ '.' + extension);                     //on prend le name au dessus et on rajoute date à la mms
+    callback(null, name);                     //on prend le name au dessus et on rajoute date à la mms
 
     }
 });
