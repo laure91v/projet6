@@ -30,11 +30,11 @@ app.use((req, res, next) => {
   });
 
     
-
+  app.use('/images', express.static(path.join(__dirname, 'images')));//repondre aux requetes envoyées à 'image', qu'il serve le dossier static, dossier dirname où l'on met images
+ 
 
   app.use(bodyParser.json());     // body-parser permet d'extraire l'objet JSON de la demande. il est mis "middleware global"
- //app.use('images', express.static(path.join(_dirname, 'images')));  //repondre aux requetes envoyées à 'image', qu'il serve le dossier static, dossier dirname où l'on met images
- 
+   
   app.use('/api/sauces', sauceRoutes);
   app.use('/api/auth', userRoutes);
   
