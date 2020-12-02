@@ -1,5 +1,6 @@
 
 const mongoose = require('mongoose');
+'use strict';
 
 const saucesSchema = mongoose.Schema({
     

@@ -1,5 +1,5 @@
 const multer = require('multer');           //va aider àla gestion de fichiers envoyés via requete http vers notre API
-                                            // expliquer comment gerer les fichiers, où les enregistrer et quel nom de fichier leurs donner
+ 'use strict';                                           // expliquer comment gerer les fichiers, où les enregistrer et quel nom de fichier leurs donner
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',

@@ -1,69 +1,56 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
+
 const User = require('../models/User');
+'use strict';
 
 
-/*exports.signup = (req, res, next) => {          //fonction signup qui va crypter le mot de passe, créer un new user avec ce MDP crypté + adresse mail du corps de la requete et enregistrer ce user dans la base de données
-    bcrypt.hash(req.body.password, 10)              //fonction pour crypter un mot de passe
-        //on lui passe le mot de passe du corps de la requete passé par le fontend; 10 tour=combien de fois on va utiliser l'algorithme de hashage
-        .then(hash => {                                //on recupere le hash de mot de passe, qu'on enrgistre dans un new user, dans la base de données
-            const user = new User({                     //on crée le new userr avec le modele mongoose
-                email: req.body.email,                   //on prend l'email fournit dans le corps de la requete
-                password: hash                          // on enregistre le hash créé ici(.then), ne pas stocker du blanc
-            });
-
-            user.save()                                       //on utilise save pour l'enregistrer dans la base de données
-                .then(() => res.status(201).json({ message: 'utilisateur créé' }))                   //renvoyer un 201 pour une création de ressources 
-
-                .catch(error => res.status(400).json({ error }));
-        })
-        .catch(error => res.status(500).json({ error }));           //on capte l'erreur et on l'envoid ans un objet
-
-};*/
 
 exports.signup = (req, res, next) => {
+        
     if (
         !req.body.email ||
         !req.body.password) {
         return res.status(400).send(new Error('remplir tous les champs'));
     }
-
-    bcrypt.hash(req.body.password, 10)
-        .then(hash => {                                //on recupere le hash de mot de passe, qu'on enrgistre dans un new user, dans la base de données
-            const user = new User({                     //on crée le new userr avec le modele mongoose
-                email: req.body.email,                   //on prend l'email fournit dans le corps de la requete
-                password: hash                          // on enregistre le hash créé ici(.then), ne pas stocker du blanc
-            });
-
-            user.save()                                       //on utilise save pour l'enregistrer dans la base de données
-                .then(() => {
-                   
-                    return res.status(200).json({ message: 'nouvel utilisateur créé' })
-                
-                })                                                                     //renvoyer un 201 pour une création de ressources 
-
-                .catch(error => {
-                    
-                    return res.status(502).send(new Error('Une erreur inconnue est survenue!'))
-                
-                
+    else {
+        bcrypt.hash(req.body.password, 10)
+            .then(hash => {                                 //on recupere le hash de mot                     de                  passe, qu'on enrgistre dans un new user, dans la base de données
+                const user = new User({                     //on crée le new userr avec le modele mongoose
+                    email: req.body.email,                  //req.body.email,                   //on prend l'email fournit dans le corps de la requete//
+                    password: hash                          // on enregistre le hash créé ici(.then), ne pas stocker du blanc
                 });
 
-        })
-        .catch(error => {
-            console.log('ok2');
-            return res.status(501).json({ error })
-        
-        });
+                user.save()                                 //on utilise save pour l'enregistrer dans la base de données
+                    .then(() => {
 
+                        return res.status(200).json({ message: 'nouvel utilisateur créé' })     //renvoyer un 201 pour une création de ressources 
+                    })
+
+                    .catch(error => {
+                        return res.status(502).send(new Error('Une erreur inconnue est survenue!'))
+                    });
+
+            })
+            .catch(error => {
+
+                return res.status(501).json({ error })
+            })
+    }
 };
 
 
 
 
-//trouver le user dans la base de donnée qui correspond à l'adresse email entré
-exports.login = (req, res, next) => {               //user existants peuvent se connecter
-    User.findOne({ email: req.body.email })           //trouver 1 utilisateeur de la base de données-objet de comparaison: l'adresse mail envoyé dans le corps de la requete
+
+//gestion des connexions
+exports.login = (req, res, next) => { 
+
+          
+                                                       //user existants peuvent se connecter
+    User.findOne({ email: req.body.email })           //trouver 1 utilisateeur de la base                 de                                                  données-objet de comparaison: l'adresse                                             mail envoyé dans le corps de la requete
         .then(user => {
             if (!user) {                                 //verifier SI on a trouvé un user
                 return res.status(401).json({ error: 'utilisateur non trouvé' });
@@ -79,7 +66,7 @@ exports.login = (req, res, next) => {               //user existants peuvent se 
                         userId: user._id,                     //on renvoit l'identifiant de l'utilisateur dans la base, 
                         token: jwt.sign(                        //verifier   token renviyé pour authentifier la demande-on appelle la fonction SIGN QUI PREND DES ARGUMENTS
                             { userId: user._id },                 //les données à encoder dans ce token-on met l'utilisateur pour qu'un objet créé ne soit pas touchable par un autre ID
-                            'RANDOM_TOKEN_SECRET',             //cle secrete pour l'encodage
+                            process.env.JWT_TOKENSECRET,                                   //cle secrete pour l'encodage
                             { expiresIn: '24h' }                  //expiration du token
                         )
                     });

@@ -1,9 +1,11 @@
+require('dotenv').config();
 const jwt = require ('jsonwebtoken');
+'use strict';
 
 module.exports = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ') [1];               //recuperer le token dans le header autorisationconst- on recupere le 2eme element du tableau [1] le 1er etant bear:
-        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');      //decoder le token - quand ond ecode le token, cela devient un objet JS   
+        const decodedToken = jwt.verify(token, process.env.JWT_TOKENSECRET);      //decoder le token - quand ond ecode le token, cela devient un objet JS   
         const userId = decodedToken.userId;                                 //recup le userid qui estd edans
         if(req.body.userId && req.body.userId !==userId){                   //s'il y a un userId on verifie que cela correspond- s'il y a un userId et qu'il est different de userID alors
             throw 'user ID non valable';                                    //renvoye le message

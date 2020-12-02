@@ -1,5 +1,13 @@
+ 
+'use strict';
+
+//importer plugin
 const http = require('http');
+
 const app = require('./app');
+
+
+//fonction pour configurer le port de connection selon l'environnment.
 
 const normalizePort = val => {
   const port = parseInt(val, 10);
@@ -15,6 +23,7 @@ const normalizePort = val => {
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+//function gestion des erreurs
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;
@@ -37,11 +46,11 @@ const errorHandler = error => {
 
 const server = http.createServer(app);
 
-server.on('error', errorHandler);
-server.on('listening', () => {
+server.on('error', errorHandler);   //s'il y a une erreur au demarrage de server, on est bloqué ici
+server.on('listening', () => {      //sinon, si tout va bien, cela se poursuit
   const address = server.address();
-  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-  console.log('Listening on ' + bind);
+  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;//on lie le port sur lequel le serveur va tourner
+  console.log('Listening on ' + bind);//et onconfirme que c'est un succès
 });
 
 server.listen(port);
